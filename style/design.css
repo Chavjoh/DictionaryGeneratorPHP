@@ -1,0 +1,16 @@
+fieldset {
+    margin-bottom: 30px;
+}
+
+#loading {
+    text-align: center;
+}
+
+.jumbotron {
+    text-align: center;
+}
+
+input[type=checkbox],
+input[type=radio] {
+    margin-right: 5px;
+}

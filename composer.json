@@ -1,0 +1,54 @@
+{
+    "name": "Chavjoh/DictionaryGeneratorPHP",
+    "description": "PHP implementation of a dictionary generator.",
+    "minimum-stability": "stable",
+    "license": "Apache 2.0 License",
+    "authors": [
+        {
+            "name": "Chavaillaz Johan",
+            "email": "contact@chavjoh.ch"
+        }
+    ],
+    "repositories": [
+        {
+            "type": "package",
+            "package": {
+                "version": "3.1.1",
+                "name": "bootstrap",
+                "source": {
+                    "url": "https://github.com/twitter/bootstrap.git",
+                    "type": "git",
+                    "reference": "v3.1.1"
+                },
+                "dist": {
+                    "url": "https://github.com/twitter/bootstrap/releases/download/v3.1.1/bootstrap-3.1.1-dist.zip",
+                    "type": "zip"
+                }
+            }
+        },
+        {
+            "type": "package",
+            "package": {
+                "name": "jquery",
+                "version": "2.1.0",
+                "source": {
+                    "url": "https://github.com/jquery/jquery",
+                    "type": "git",
+                    "reference": "2.1.0"
+                },
+                "dist": {
+                    "url": "http://code.jquery.com/jquery-2.1.0.min.js",
+                    "type": "file"
+                }
+            }
+        }
+    ],
+    "require": {
+        "php": ">=5.3.2",
+        "bootstrap": "3.1.1",
+        "jquery": "2.1.0"
+    },
+    "config" : {
+        "vendor-dir" : "package"
+    }
+}
