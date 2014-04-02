@@ -71,7 +71,9 @@
 					<fieldset>
 						<legend>Basic alphabet</legend>
 						<label><input type="checkbox" name="alphabet" value="letters" checked="checked" />Letters</label> <br />
+						<!-- Majuscules / Minuscules -->
 						<label><input type="checkbox" name="alphabet" value="numbers" checked="checked" />Numbers</label> <br />
+						<!-- 0 1 2 3 4 5 6 7 8 9 -->
 						<label><input type="checkbox" name="alphabet" value="special" />Special characters</label>
 						<!-- - _ , . : ; + " * # % & / ( ) = ? ` ' ^ ! $ [ ] { } < > @ -->
 					</fieldset>
@@ -97,6 +99,13 @@
 				</div>
 			</div>
 		</form>
+		<div class="row marketing">
+			<?php if (isset($_POST['submit']))
+			{
+				print_r($dictionary->getDictionary());
+			}
+			?>
+		</div>
 		<div id="loading">
 			<img src="image/loading.gif" alt="Loading" />
 		</div>

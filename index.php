@@ -47,10 +47,10 @@ if (isset($_POST['submit']))
 
     // Launch generator
     $dictionary = new DictionaryGenerator(/* Settings */);
-    $dictionary->execute();
+	$dictionary->addAlphabet("abc");
+    $dictionary->generate(2, 4);
 }
-else
-{
-    // Show generator form
-    require_once(PATH_APP.'Form.php');
-}
+
+// Show generator form
+require_once(PATH_APP.'Form.php');
+

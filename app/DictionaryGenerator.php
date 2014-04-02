@@ -27,5 +27,61 @@
 
 class DictionaryGenerator
 {
+	protected $generatedDictionary;
+	protected $alphabet;
 
+	public function __construct()
+	{
+		$this->generatedDictionary = array();
+		$this->alphabet = "";
+	}
+
+	public function addAlphabet($content)
+	{
+		$this->alphabet .= $content;
+	}
+
+	public function generate($minSize, $maxSize)
+	{
+		if (empty($this->alphabet))
+			throw new Exception("Empty alphabet");
+
+		$alphabetSize = strlen($this->alphabet);
+		$currentAlphabetIndex = array();
+
+		for ($currentSize = $minSize; $currentSize <= $maxSize; ++$currentSize)
+		{
+			$currentIndex = 0;
+			$currentIndexMax = pow($alphabetSize, $currentSize);
+			//echo '<h1>New size '.$currentSize.' -> '.($currentSize * $alphabetSize).'</h1>';
+			do
+			{
+				$word = "";
+				//echo '<h2>New Word : '.$currentIndex.'</h2>';
+
+				// Current position in current size to be generated
+				for ($currentPosition = 0; $currentPosition < $currentSize; ++$currentPosition)
+				{
+					// Initialization of alphabet index for each position
+					if (!isset($currentAlphabetIndex[$currentPosition]))
+						$currentAlphabetIndex[$currentPosition] = 0;
+
+					$inversePosition = $currentSize - $currentPosition - 1;
+
+					$indexValue = floor(($currentIndex / pow($alphabetSize, $inversePosition)))  % $alphabetSize;
+					//echo $indexValue.'<br />';
+					$word .= $this->alphabet[$indexValue];
+				}
+
+				$this->generatedDictionary[] = $word;
+				$currentIndex += 1;
+			}
+			while ($currentIndex < $currentIndexMax);
+		}
+	}
+
+	public function getDictionary()
+	{
+		return $this->generatedDictionary;
+	}
 } 
