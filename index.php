@@ -28,6 +28,8 @@
 // It could take a lot of time
 set_time_limit(0);
 
+ini_set('memory_limit', '512M');
+
 // Hard mode here :D
 error_reporting(E_ALL);
 
@@ -40,17 +42,50 @@ include_once './package/autoload.php';
 
 // Include classes
 require_once(PATH_APP.'DictionaryGenerator.php');
+require_once(PATH_APP.'Tools.php');
+
+// Get settings
+$minSize = (isset($_POST['minimum'])) ? intval($_POST['minimum']) : 0;
+$maxSize = (isset($_POST['maximum'])) ? intval($_POST['maximum']) : 0;
+
+// Launch generator
+$dictionary = new DictionaryGenerator();
 
 if (isset($_POST['submit']))
 {
-    // Get settings
+	$letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
+	$numbers = "0123456789";
+	$special = "-_,.:;+\"*#%&/\\()=?`'^!$[]{<>@";
 
-    // Launch generator
-    $dictionary = new DictionaryGenerator(/* Settings */);
-	$dictionary->addAlphabet("abc");
-    $dictionary->generate(2, 4);
+	if (isset($_POST['alphabet']))
+	{
+		foreach ($_POST['alphabet'] AS $type)
+		{
+			switch ($type)
+			{
+				case 'letters':
+					$dictionary->addAlphabet($letters);
+					break;
+				case 'numbers':
+					$dictionary->addAlphabet($numbers);
+					break;
+				case 'special':
+					$dictionary->addAlphabet($special);
+					break;
+			}
+		}
+	}
+
+    $dictionary->generate($minSize, $maxSize);
 }
 
-// Show generator form
-require_once(PATH_APP.'Form.php');
+if (isset($_POST['result']) && $_POST['result'] == "download")
+{
+	$dictionary->launchDownload();
+}
+else
+{
+	// Show generator form
+	require_once(PATH_APP.'Form.php');
+}
 

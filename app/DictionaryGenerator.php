@@ -46,8 +46,13 @@ class DictionaryGenerator
 		if (empty($this->alphabet))
 			throw new Exception("Empty alphabet");
 
+		if ($minSize > $maxSize)
+			throw new Exception("Invalid size");
+
 		$alphabetSize = strlen($this->alphabet);
 		$currentAlphabetIndex = array();
+
+		//echo 'AlphabetSize : '.$alphabetSize.'-'.$this->alphabet.'-<br />';
 
 		for ($currentSize = $minSize; $currentSize <= $maxSize; ++$currentSize)
 		{
@@ -66,7 +71,7 @@ class DictionaryGenerator
 					if (!isset($currentAlphabetIndex[$currentPosition]))
 						$currentAlphabetIndex[$currentPosition] = 0;
 
-					$inversePosition = $currentSize - $currentPosition - 1;
+					$inversePosition = $currentSize - 1 - $currentPosition;
 
 					$indexValue = floor(($currentIndex / pow($alphabetSize, $inversePosition)))  % $alphabetSize;
 					//echo $indexValue.'<br />';
@@ -78,6 +83,18 @@ class DictionaryGenerator
 			}
 			while ($currentIndex < $currentIndexMax);
 		}
+	}
+
+	public function launchDownload()
+	{
+		header("Content-type: text/plain");
+		header("Content-Disposition: attachment; filename=dictionary.txt");
+		echo implode("\n", $this->generatedDictionary);
+	}
+
+	public function showResult()
+	{
+		echo implode('<br />', $this->generatedDictionary);
 	}
 
 	public function getDictionary()

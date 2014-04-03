@@ -50,6 +50,29 @@
 	<script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
 	<script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
 	<![endif]-->
+
+	<script type="text/javascript">
+		$(function() {
+			$("#submit").click(function() {
+
+				var docHeight = $(document).height();
+
+				$("#loading")
+					.height(docHeight)
+					.css({
+						'opacity' : 0.4,
+						'position': 'absolute',
+						'top': 0,
+						'left': 0,
+						'background-color': 'black',
+						'width': '100%',
+						'z-index': 5000
+					});
+
+				$("#loading").show();
+			});
+		});
+	</script>
 </head>
 <body>
 	<div class="container">
@@ -70,18 +93,18 @@
 				<div class="col-lg-6">
 					<fieldset>
 						<legend>Basic alphabet</legend>
-						<label><input type="checkbox" name="alphabet" value="letters" checked="checked" />Letters</label> <br />
+						<label><input type="checkbox" name="alphabet[]" value="letters" checked="checked" />Letters</label> <br />
 						<!-- Majuscules / Minuscules -->
-						<label><input type="checkbox" name="alphabet" value="numbers" checked="checked" />Numbers</label> <br />
+						<label><input type="checkbox" name="alphabet[]" value="numbers" checked="checked" />Numbers</label> <br />
 						<!-- 0 1 2 3 4 5 6 7 8 9 -->
-						<label><input type="checkbox" name="alphabet" value="special" />Special characters</label>
+						<label><input type="checkbox" name="alphabet[]" value="special" />Special characters</label>
 						<!-- - _ , . : ; + " * # % & / ( ) = ? ` ' ^ ! $ [ ] { } < > @ -->
 					</fieldset>
 
 					<fieldset>
 						<legend>Size</legend>
-						<label>Minimum size <input type="text" name="minimum" /> <br /></label>
-						<label>Maximum size <input type="text" name="maximum" /></label>
+						<label>Minimum size <input type="text" name="minimum" value="<?= $minSize; ?>" /> <br /></label>
+						<label>Maximum size <input type="text" name="maximum" value="<?= $maxSize; ?>" /></label>
 					</fieldset>
 				</div>
 
@@ -94,20 +117,25 @@
 					<fieldset>
 						<legend>Launch</legend>
 						Start generator. It could take awhile. <br />
-						<input type="submit" name="submit" value="Generate dictionary" />
+						<input type="submit" name="submit" id="submit" value="Generate dictionary" />
 					</fieldset>
 				</div>
 			</div>
 		</form>
-		<div class="row marketing">
-			<?php if (isset($_POST['submit']))
-			{
-				print_r($dictionary->getDictionary());
-			}
-			?>
-		</div>
 		<div id="loading">
 			<img src="image/loading.gif" alt="Loading" />
+		</div>
+		<div class="row marketing">
+			Memory usage :
+			<?= convert(memory_get_usage(true)) ?>
+			<div class="result">
+				<?php
+				if (isset($_POST['submit']))
+				{
+					$dictionary->showResult();
+				}
+				?>
+			</div>
 		</div>
 	</div>
 </body>
