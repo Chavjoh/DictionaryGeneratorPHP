@@ -101,42 +101,31 @@
 						<!-- - _ , . : ; + " * # % & / ( ) = ? ` ' ^ ! $ [ ] { } < > @ -->
 					</fieldset>
 
+
+				</div>
+
+				<div class="col-lg-6">
 					<fieldset>
 						<legend>Size</legend>
 						<label>Minimum size <input type="text" name="minimum" value="<?= $minSize; ?>" /> <br /></label>
 						<label>Maximum size <input type="text" name="maximum" value="<?= $maxSize; ?>" /></label>
 					</fieldset>
 				</div>
+			</div>
+			<div id="loading">
+				<img src="image/loading.gif" alt="Loading" />
+			</div>
+			<div class="row marketing">
 
-				<div class="col-lg-6">
-					<fieldset>
-						<legend>Results</legend>
-						<label><input type="radio" name="result" value="show" checked="checked" />Show results in page</label> <br />
-						<label><input type="radio" name="result" value="download" />Download results</label> <br />
-					</fieldset>
-					<fieldset>
-						<legend>Launch</legend>
-						Start generator. It could take awhile. <br />
-						<input type="submit" name="submit" id="submit" value="Generate dictionary" />
-					</fieldset>
-				</div>
+				<fieldset>
+					<legend>Launch</legend>
+					Start generator. It could take awhile. <br />
+					<input type="submit" name="submit" id="submit" value="Generate dictionary" />
+				</fieldset>
+				Memory usage :
+				<?= convert(memory_get_usage(true)) ?>
 			</div>
 		</form>
-		<div id="loading">
-			<img src="image/loading.gif" alt="Loading" />
-		</div>
-		<div class="row marketing">
-			Memory usage :
-			<?= convert(memory_get_usage(true)) ?>
-			<div class="result">
-				<?php
-				if (isset($_POST['submit']))
-				{
-					$dictionary->showResult();
-				}
-				?>
-			</div>
-		</div>
 	</div>
 </body>
 </html>

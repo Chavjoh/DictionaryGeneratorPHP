@@ -28,7 +28,9 @@
 // It could take a lot of time
 set_time_limit(0);
 
-ini_set('memory_limit', '512M');
+// Need a lot of memory
+// If you change it, adapt PART_SIZE in DictionaryGenerator
+ini_set('memory_limit', '128M');
 
 // Hard mode here :D
 error_reporting(E_ALL);
@@ -45,8 +47,8 @@ require_once(PATH_APP.'DictionaryGenerator.php');
 require_once(PATH_APP.'Tools.php');
 
 // Get settings
-$minSize = (isset($_POST['minimum'])) ? intval($_POST['minimum']) : 0;
-$maxSize = (isset($_POST['maximum'])) ? intval($_POST['maximum']) : 0;
+$minSize = (isset($_POST['minimum'])) ? intval($_POST['minimum']) : 1;
+$maxSize = (isset($_POST['maximum'])) ? intval($_POST['maximum']) : 1;
 
 // Launch generator
 $dictionary = new DictionaryGenerator();
@@ -77,15 +79,9 @@ if (isset($_POST['submit']))
 	}
 
     $dictionary->generate($minSize, $maxSize);
-}
-
-if (isset($_POST['result']) && $_POST['result'] == "download")
-{
 	$dictionary->launchDownload();
 }
-else
-{
-	// Show generator form
-	require_once(PATH_APP.'Form.php');
-}
+
+// Show generator form
+require_once(PATH_APP.'Form.php');
 

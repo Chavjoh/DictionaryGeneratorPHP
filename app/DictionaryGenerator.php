@@ -27,6 +27,13 @@
 
 class DictionaryGenerator
 {
+	const FOLDER = './data/';
+	const PART_SIZE = 1000000; // Reduce to avoid memory problems
+	const PART_MERGE = 'dictionary.txt';
+	const PART_ZIP = 'dictionary.zip';
+	const PATTERN_ALL = '*.txt';
+	const PATTERN_PART = 'part*.txt';
+
 	protected $generatedDictionary;
 	protected $alphabet;
 
@@ -34,6 +41,23 @@ class DictionaryGenerator
 	{
 		$this->generatedDictionary = array();
 		$this->alphabet = "";
+
+		if (!is_dir(self::FOLDER))
+		{
+			mkdir(self::FOLDER);
+		}
+
+		$this->clean(true);
+	}
+
+	public function getZipPath()
+	{
+		return self::FOLDER.self::PART_ZIP;
+	}
+
+	public function getTxtPath()
+	{
+		return self::FOLDER.self::PART_MERGE;
 	}
 
 	public function addAlphabet($content)
@@ -80,21 +104,109 @@ class DictionaryGenerator
 
 				$this->generatedDictionary[] = $word;
 				$currentIndex += 1;
+
+				if (($currentIndex % DictionaryGenerator::PART_SIZE) == 0)
+					$this->savePart();
 			}
 			while ($currentIndex < $currentIndexMax);
 		}
+
+		$this->savePart();
+		$this->mergePart();
+		$this->compress();
+		$this->clean(false);
 	}
 
 	public function launchDownload()
 	{
-		header("Content-type: text/plain");
-		header("Content-Disposition: attachment; filename=dictionary.txt");
-		echo implode("\n", $this->generatedDictionary);
+		// Redirect to zip file
+		header('Location: '.$this->getZipPath());
+
+		// Stop script
+		exit(0);
 	}
 
 	public function showResult()
 	{
 		echo implode('<br />', $this->generatedDictionary);
+	}
+
+	/**
+	 * To avoid memory problem
+	 */
+	public function savePart()
+	{
+		static $partNumber = 0;
+
+		file_put_contents(DictionaryGenerator::FOLDER.'part'.$partNumber.'.txt', implode("\n", $this->generatedDictionary));
+		$this->generatedDictionary = array();
+
+		++$partNumber;
+	}
+
+	/**
+	 * Clean all files or just part files
+	 *
+	 * @param bool $cleanAll
+	 */
+	public function clean($cleanAll = false)
+	{
+		if ($cleanAll)
+			$pattern = self::PATTERN_ALL;
+		else
+			$pattern = self::PATTERN_PART;
+
+		$files = glob(DictionaryGenerator::FOLDER.$pattern);
+
+		foreach ($files AS $file)
+		{
+			unlink($file);
+		}
+	}
+
+	public function mergePart()
+	{
+		$partFiles = glob(self::FOLDER.self::PATTERN_ALL);
+
+		$out = fopen($this->getTxtPath(), "w");
+
+		foreach ($partFiles as $file)
+		{
+			$in = fopen($file, "r");
+
+			while ($line = fgets($in))
+			{
+				fwrite($out, $line);
+			}
+
+			fclose($in);
+		}
+
+		fclose($out);
+	}
+
+	public function compress()
+	{
+		$zip = new ZipArchive();
+		$zipPath = $this->getZipPath();
+		$dictionaryPath = $this->getTxtPath();
+
+		if (file_exists($zipPath))
+		{
+			unlink($zipPath);
+		}
+
+		if ($zip->open($zipPath, ZIPARCHIVE::CM_PKWARE_IMPLODE) !== true)
+		{
+			throw new Exception("Could not Create $zipPath");
+		}
+
+		if (!$zip->addFile($dictionaryPath, self::PART_MERGE))
+		{
+			throw new Exception("Error archiving $dictionaryPath in $zipPath");
+		}
+
+		$zip->close();
 	}
 
 	public function getDictionary()

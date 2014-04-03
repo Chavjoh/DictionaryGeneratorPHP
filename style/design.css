@@ -16,11 +16,6 @@ input[type=radio] {
     margin-right: 5px;
 }
 
-.result {
-    overflow: auto;
-    height: 200px;
-}
-
 #loading img {
     position: fixed;
     top: 50%;
