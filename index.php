@@ -35,6 +35,12 @@ ini_set('memory_limit', '128M');
 // Hard mode here :D
 error_reporting(E_ALL);
 
+// Start session to use session ID
+session_start();
+
+// Debug mode
+define("DEBUG", false);
+
 // Define directories
 define("ROOT", dirname(__FILE__).'/');
 define("PATH_APP", ROOT.'app/');
@@ -55,9 +61,11 @@ $dictionary = new DictionaryGenerator();
 
 if (isset($_POST['submit']))
 {
+	define("GENERATED", 1);
+
 	$letters = "abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ";
 	$numbers = "0123456789";
-	$special = "-_,.:;+\"*#%&/\\()=?`'^!$[]{<>@";
+	$special = "-_,.:;+\"*#%&/\\()=?`'^!$[]{}<>@";
 
 	if (isset($_POST['alphabet']))
 	{
@@ -79,7 +87,6 @@ if (isset($_POST['submit']))
 	}
 
     $dictionary->generate($minSize, $maxSize);
-	$dictionary->launchDownload();
 }
 
 // Show generator form

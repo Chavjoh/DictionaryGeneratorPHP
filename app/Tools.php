@@ -26,11 +26,13 @@
  */
 
 /**
+ * Define unit from a size.
  * Function from http://php.net/manual/fr/function.memory-get-usage.php
- * @param $size
- * @return string
+ *
+ * @param int $size Size in bytes
+ * @return string Size with unit
  */
-function convert($size)
+function convertSize($size)
 {
 	$unit = array('b', 'kb', 'mb', 'gb', 'tb', 'pb');
 	return @round($size/pow(1024,($i=floor(log($size,1024)))),2).' '.$unit[$i];

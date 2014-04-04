@@ -23,3 +23,16 @@ input[type=radio] {
     margin-top: -64px;
     margin-left: -64px;
 }
+
+label {
+    cursor: pointer;
+    display: block;
+}
+
+.size {
+    width: 50px;
+}
+
+.download {
+    display: none;
+}

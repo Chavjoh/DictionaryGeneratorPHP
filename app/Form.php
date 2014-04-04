@@ -93,12 +93,9 @@
 				<div class="col-lg-6">
 					<fieldset>
 						<legend>Basic alphabet</legend>
-						<label><input type="checkbox" name="alphabet[]" value="letters" checked="checked" />Letters</label> <br />
-						<!-- Majuscules / Minuscules -->
-						<label><input type="checkbox" name="alphabet[]" value="numbers" checked="checked" />Numbers</label> <br />
-						<!-- 0 1 2 3 4 5 6 7 8 9 -->
-						<label><input type="checkbox" name="alphabet[]" value="special" />Special characters</label>
-						<!-- - _ , . : ; + " * # % & / ( ) = ? ` ' ^ ! $ [ ] { } < > @ -->
+						<label><input type="checkbox" name="alphabet[]" value="letters" checked="checked" />Letters [a-zA-Z]</label>
+						<label><input type="checkbox" name="alphabet[]" value="numbers" checked="checked" />Numbers [0-9]</label>
+						<label><input type="checkbox" name="alphabet[]" value="special" />Special characters [-_,.:;+"*#%&/\()=?`'^!$\[\]{}<>@]</label>
 					</fieldset>
 
 
@@ -107,25 +104,32 @@
 				<div class="col-lg-6">
 					<fieldset>
 						<legend>Size</legend>
-						<label>Minimum size <input type="text" name="minimum" value="<?= $minSize; ?>" /> <br /></label>
-						<label>Maximum size <input type="text" name="maximum" value="<?= $maxSize; ?>" /></label>
+						<label>Minimum size <input type="text" name="minimum" class="size" value="<?= $minSize; ?>" /></label>
+						<label>Maximum size <input type="text" name="maximum" class="size" value="<?= $maxSize; ?>" /></label>
 					</fieldset>
 				</div>
 			</div>
 			<div id="loading">
 				<img src="image/loading.gif" alt="Loading" />
 			</div>
-			<div class="row marketing">
-
+			<div class="row marketing text-center">
 				<fieldset>
 					<legend>Launch</legend>
 					Start generator. It could take awhile. <br />
 					<input type="submit" name="submit" id="submit" value="Generate dictionary" />
 				</fieldset>
 				Memory usage :
-				<?= convert(memory_get_usage(true)) ?>
+				<?= convertSize(memory_get_usage(true)) ?>
 			</div>
 		</form>
 	</div>
+	<?php
+	if (defined("GENERATED"))
+	{
+		?>
+		<iframe class="download" src="<?= $dictionary->getZipPath() ?>"></iframe>
+		<?php
+	}
+	?>
 </body>
 </html>
