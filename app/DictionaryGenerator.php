@@ -27,7 +27,7 @@
 
 class DictionaryGenerator
 {
-	const PART_SIZE = 1000000; // Reduce to avoid memory problems
+	const PART_SIZE = 1000000; // Reduce it to avoid memory problems
 	const PART_MERGE = 'dictionary.txt';
 	const PART_ZIP = 'dictionary.zip';
 	const PATTERN_ALL = '*.txt';

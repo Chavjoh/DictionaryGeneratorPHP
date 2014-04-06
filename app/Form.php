@@ -84,7 +84,8 @@
 			<h1>Dictionary Generator</h1>
 
 			<p class="lead">
-				...
+				Generate all possible words between indicated size <br />
+				with the given alphabet (Letters and/or Numbers and/or Special characters)
 			</p>
 		</div>
 
@@ -118,10 +119,15 @@
 					Start generator. It could take awhile. <br />
 					<input type="submit" name="submit" id="submit" value="Generate dictionary" />
 				</fieldset>
-				Memory usage :
-				<?= convertSize(memory_get_usage(true)) ?>
+				<p>
+					Memory usage :
+					<?= convertSize(memory_get_usage(true)) ?>
+				</p>
 			</div>
 		</form>
+		<div class="footer">
+			<p>By <a href="http://www.chavjoh.ch">Johan Chavaillaz</a>, under Apache 2.0 license.</p>
+		</div>
 	</div>
 	<?php
 	if (defined("GENERATED"))
